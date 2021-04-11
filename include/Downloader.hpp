@@ -5,6 +5,10 @@
 
 #include <iostream>
 #include <string>
+#include <boost/asio.hpp>
+#include <boost/beast.hpp>
+
+namespace http = boost::beast::http;
 
 struct EndPoint{
   std::string protocol;

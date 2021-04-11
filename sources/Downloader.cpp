@@ -1,6 +1,8 @@
 // Copyright 2020 Your Name <your_email>
 
 #include <Downloader.hpp>
+
+//TODO:
 auto EndPoint::operator=(EndPoint&& tmp) noexcept -> EndPoint&{
   if(this == &tmp){
     std::cout << "Equal objects" << std::endl;
@@ -27,6 +29,17 @@ void ParseUri(const std::string& s_url, EndPoint& ep){
 
 std::string Downloader::GetHttpPage(std::string&& domain,
                                     std::string&& target) {
+boost::asio::io_context io;
 
-  return std::__cxx11::string();
+boost::asio::ip::tcp::resolver resolver(io);
+boost::beast::tcp_stream tcpStream(io);
+
+auto result = resolver.resolve(domain, "80");
+
+tcpStream.connect(result);
+
+http::request<http::string_body> req{http::verb::get, target, 11};
+req.set(http::field::host, domain);
+req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+
 }
