@@ -20,18 +20,29 @@ HunterGate(
   SHA1 "35fa55bc1dfcf9f4d7264f8bb26cd1759ce1ae07"
 )
 
-# TODO: rename project and delete this comment
-project(template VERSION 0.1.0)
-string(APPEND CMAKE_CXX_FLAGS " -pedantic -Werror -Wall -Wextra")
+project(lab-09-producer-consumer VERSION 0.1.0)
+#string(APPEND CMAKE_CXX_FLAGS " -pedantic -Werror -Wall -Wextra")
 string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-command-line-argument")
 string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")
 
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
 
+hunter_add_package(gumbo)
+find_package(gumbo CONFIG REQUIRED)
+
+hunter_add_package(Beast)
+find_package(Beast CONFIG REQUIRED)
+
+hunter_add_package(Boost COMPONENTS system program_options)
+find_package(Boost CONFIG REQUIRED system program_options)
+
+hunter_add_package(OpenSSL)
+find_package(OpenSSL REQUIRED)
+
 add_library(${PROJECT_NAME} STATIC
   # enum your files and delete this comment
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/source.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/sources/Downloader.cpp
 )
 
 add_executable(demo
@@ -41,9 +52,18 @@ add_executable(demo
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include>"
+        ${CMAKE_CURRENT_SOURCE_DIR}/third-party/ThreadPool
+        ${CMAKE_CURRENT_SOURCE_DIR}/third-party/beast/example/common
 )
 
 target_link_libraries(demo ${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME}
+        gumbo::gumbo
+        Boost::boost
+        Boost::system
+        Boost::program_options
+        Beast::Beast
+        OpenSSL::SSL)
 
 if(BUILD_TESTS)
   add_executable(tests
