@@ -2,17 +2,6 @@
 
 #include <Downloader.hpp>
 
-//TODO: при необходимости удалить
-auto EndPoint::operator=(EndPoint&& tmp) noexcept -> EndPoint&{
-  if(this == &tmp){
-    std::cout << "Equal objects" << std::endl;
-  }
-  protocol = tmp.protocol;
-  domain = tmp.domain;
-  target = tmp.target;
-  return *this;
-}
-
 void ParseUri(const std::string& s_url, EndPoint& ep){
   size_t dots_pos = s_url.find_first_of(':');
   ep.protocol = s_url.substr(0, dots_pos);
@@ -59,7 +48,7 @@ void ParseUri(const std::string& s_url, EndPoint& ep){
   ssl::context ctx{ssl::context::sslv23_client};
 
   load_root_certificates(ctx);
-  ctx.set_verify_mode(ssl::verify_peer);
+  ctx.set_verify_mode(ssl::verify_none);
 
   boost::asio::ip::tcp::resolver resolver(io);
   ssl::stream<boost::asio::ip::tcp::socket> stream{io, ctx};
@@ -92,7 +81,7 @@ void ParseUri(const std::string& s_url, EndPoint& ep){
 
   return res.body();
 }
-Page Downloader::DownloadPage(std::string URL) {
+Page Downloader::DownloadPage(const std::string& URL) {
   EndPoint endPoint;
   ParseUri(URL, endPoint);
 

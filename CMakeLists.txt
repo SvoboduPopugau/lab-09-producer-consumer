@@ -43,7 +43,9 @@ find_package(OpenSSL REQUIRED)
 add_library(${PROJECT_NAME} STATIC
   # enum your files and delete this comment
         ${CMAKE_CURRENT_SOURCE_DIR}/sources/Downloader.cpp
-        sources/HtmlParser.cpp include/HtmlParser.h)
+        sources/HtmlParser.cpp
+        include/HtmlParser.hpp
+        include/WorkTypenames.hpp)
 
 add_executable(demo
   ${CMAKE_CURRENT_SOURCE_DIR}/demo/main.cpp

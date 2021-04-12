@@ -7,17 +7,24 @@
 
 #include <string>
 #include <vector>
-
-struct Page
-{
-    std::string html_text;
-    std::string domain;
-    std::string protocol;
-};
+#include "WorkTypenames.hpp"
+#include <gumbo.h>
 
 class HtmlParser {
-  std::vector<std::string> GetLinks(Page html_page);
-  std::vector<std::string> GetPng(std::vector<std::string> Links);
+ public:
+//  Парсим страницу, находим href =
+  static std::vector<EndPoint> GetLinks(const Page&& html_page);
+//  Из данных получаемых на вход выделяем ссылки изображений,
+//  Links изменяем так, чтобы в нем больше не было ссылок на фотографии
+  static std::vector<EndPoint> GetPng(std::vector<EndPoint>& Links);
 };
+
+
+//TODO: При выводе ссылок, чтобы избежать ссылок вида http://http:// и подобных,
+// при выписывании проверять, находится ли имя домена или протокола в теле target,
+// если нет то выписывать Endpoint как "protocol + :// + domain + target" сделать
+// это необходимо на этапе распределения ссылок по очередям записи и очередям скачивания
+//
+
 
 #endif  // LAB_09_PRODUCER_CONSUMER_HTMLPARSER_H
