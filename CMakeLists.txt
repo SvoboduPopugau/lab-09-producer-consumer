@@ -43,7 +43,7 @@ find_package(OpenSSL REQUIRED)
 add_library(${PROJECT_NAME} STATIC
   # enum your files and delete this comment
         ${CMAKE_CURRENT_SOURCE_DIR}/sources/Downloader.cpp
-)
+        sources/HtmlParser.cpp include/HtmlParser.h)
 
 add_executable(demo
   ${CMAKE_CURRENT_SOURCE_DIR}/demo/main.cpp
@@ -52,8 +52,8 @@ add_executable(demo
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include>"
-        ${CMAKE_CURRENT_SOURCE_DIR}/third-party/ThreadPool
-        ${CMAKE_CURRENT_SOURCE_DIR}/third-party/beast/example/common
+#        ${CMAKE_CURRENT_SOURCE_DIR}/third-party/ThreadPool
+#        ${CMAKE_CURRENT_SOURCE_DIR}/third-party/beast/example/common
 )
 
 target_link_libraries(demo ${PROJECT_NAME})
