@@ -11,12 +11,18 @@ struct Page
   std::string protocol;
   std::string domain;
   std::string html_text;
+  size_t level;
 };
 
 struct EndPoint{
   std::string protocol;
   std::string domain;
   std::string target;
+  size_t level;
+};
+struct Url{
+  std::string url;
+  size_t level;
 };
 
 

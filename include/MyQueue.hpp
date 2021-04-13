@@ -8,7 +8,7 @@
 template <typename T>
 class MyQueue{
  public:
-  MyQueue(): queue_(std::queue<T>()), mutex_(std::mutex()){};
+  MyQueue(): queue_(), mutex_(){};
   void Push(T& other){
     std::lock_guard{mutex_};
     queue_.push(other);
@@ -21,6 +21,19 @@ class MyQueue{
     std::lock_guard{mutex_};
     for(auto& x : others)
       queue_.push(x);
+  }
+  void Push(std::future<T>& other){
+    std::lock_guard{mutex_};
+    queue_.push(other.get());
+  }
+  void Push(std::future<T>&& other){
+    std::lock_guard{mutex_};
+    queue_.push(std::move(other.get()));
+  }
+  void Push(std::vector<std::future<T> >&& other){
+    std::lock_guard{mutex_};
+    for(auto& x : other)
+      queue_.push(x.get());
   }
   bool Empty(){
     return queue_.empty();

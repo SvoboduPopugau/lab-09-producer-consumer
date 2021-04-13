@@ -45,7 +45,7 @@ add_library(${PROJECT_NAME} STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/sources/Downloader.cpp
         sources/HtmlParser.cpp
         include/HtmlParser.hpp
-        include/WorkTypenames.hpp)
+        include/WorkTypenames.hpp sources/Manager.cpp include/Manager.hpp)
 
 add_executable(demo
   ${CMAKE_CURRENT_SOURCE_DIR}/demo/main.cpp

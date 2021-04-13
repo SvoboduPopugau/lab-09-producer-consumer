@@ -11,8 +11,9 @@
 #include <iostream>
 #include <string>
 
-#include "../third-party/beast/example/common/root_certificates.hpp"
+#include <../third-party/beast/example/common/root_certificates.hpp>
 #include "WorkTypenames.hpp"
+#include "MyQueue.hpp"
 
 namespace http = boost::beast::http;
 namespace ssl = boost::asio::ssl;
@@ -20,12 +21,10 @@ namespace ssl = boost::asio::ssl;
 class Downloader{
  public:
   Downloader() = default;
-  Page DownloadPage(const std::string& URL);
+  static void DownloadPage(const std::string&& URL, size_t&& lev, MyQueue<Page>* parseQueue);
  private:
-  [[maybe_unused]] std::string GetHttpPage(std::string&& domain, std::string&& target);
+  [[maybe_unused]] static std::string GetHttpPage(std::string&& domain, std::string&& target);
   [[maybe_unused]] static std::string GetHttpsPage(std::string&& domain, std::string&& target);
-
- private:
 
 };
 

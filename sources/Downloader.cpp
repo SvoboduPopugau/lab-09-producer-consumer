@@ -81,9 +81,10 @@ void ParseUri(const std::string& s_url, EndPoint& ep){
 
   return res.body();
 }
-Page Downloader::DownloadPage(const std::string& URL) {
+void Downloader::DownloadPage(const std::string&& URL, size_t&& lev, MyQueue<Page>* parseQueue) {
   EndPoint endPoint;
   ParseUri(URL, endPoint);
+  endPoint.level = lev;
 
   std::string html_content;
 
@@ -94,8 +95,9 @@ Page Downloader::DownloadPage(const std::string& URL) {
     html_content = GetHttpsPage(std::move(endPoint.domain),
                                 std::move(endPoint.target));
 
-  Page page{endPoint.protocol, endPoint.domain, html_content};
+  Page page{endPoint.protocol, endPoint.domain, html_content, endPoint.level};
 
-//  TODO: Загрузить html_content в очередь
-  return page;
+
+//  Загрузить html_content в очередь парсинга
+  parseQueue->Push(page);
 }

@@ -73,7 +73,7 @@ std::vector<EndPoint> HtmlParser::GetLinks(const Page&& html_page) {
   std::vector<EndPoint> ep_links;
   ep_links.reserve(links.size());
 for(auto& x : links){
-    ep_links.push_back({html_page.protocol, html_page.domain, x});
+    ep_links.push_back({html_page.protocol, html_page.domain, x, html_page.level + 1});
   }
   return ep_links;
 }
@@ -90,4 +90,9 @@ std::vector<EndPoint> HtmlParser::GetPng(std::vector<EndPoint>& Links) {
   Links.clear();
   Links = ep_Weblinks;
   return ep_Pnglinks;
+}
+void HtmlParser::ParsePage(Page& page, MyQueue<Page>* parseQueue,
+                           MyQueue<EndPoint>* writeQueue,
+                           MyQueue<Url>* findQueue) {
+
 }
