@@ -49,10 +49,13 @@
 //  return 0;
 //}
 #include <Downloader.hpp>
+
 #include "Manager.hpp"
-int main(){
-  Manager manager;
-  manager.StartWork("https://en.wikipedia.org/wiki/Samurai");
+int main() {
+    Manager manager;
+    manager.StartWork("https://bmstu.ru/");
+
+    return 0;
 }
 //
 //#include <stdlib.h>

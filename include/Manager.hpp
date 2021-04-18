@@ -5,21 +5,23 @@
 #ifndef LAB_09_PRODUCER_CONSUMER_MANAGER_HPP
 #define LAB_09_PRODUCER_CONSUMER_MANAGER_HPP
 
-#include "MyQueue.hpp"
-#include "WorkTypenames.hpp"
 #include <../third-party/ThreadPool/ThreadPool.h>
+
 #include <fstream>
+
 #include "Downloader.hpp"
 #include "HtmlParser.hpp"
-
-const std::string UNKNOWN_TARGET = "Unknown url";
+#include "MyQueue.hpp"
+#include "WorkTypenames.hpp"
 
 class Manager {
  public:
   Manager();
-  Manager(std::string& filename, size_t& max_level, size_t& num_downloaders, size_t& num_parsers);
+  Manager(std::string& filename, size_t& max_level, size_t& num_downloaders,
+          size_t& num_parsers);
   void StartWork(std::string URL);
   bool WriteIMGlinks();
+  ~Manager() = default;
 
  private:
   bool work_;

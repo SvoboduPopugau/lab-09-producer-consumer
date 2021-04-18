@@ -2,11 +2,11 @@
 
 #include <Downloader.hpp>
 
-void ParseUri(const std::string& s_url, EndPoint& ep){
+void ParseUri(const std::string& s_url, EndPoint& ep) {
   size_t dots_pos = s_url.find_first_of(':');
   ep.protocol = s_url.substr(0, dots_pos);
-  size_t path_start = s_url.find('/', dots_pos+3);
-  if (path_start == std::string::npos){
+  size_t path_start = s_url.find('/', dots_pos + 3);
+  if (path_start == std::string::npos) {
     ep.domain = s_url.substr(dots_pos + 3, s_url.size() - dots_pos - 2);
     ep.target = "/";
   } else {
@@ -16,7 +16,7 @@ void ParseUri(const std::string& s_url, EndPoint& ep){
 }
 
 [[maybe_unused]] std::string Downloader::GetHttpPage(std::string&& domain,
-                                    std::string&& target) {
+                                                     std::string&& target) {
   boost::asio::io_context io;
 
   boost::asio::ip::tcp::resolver resolver(io);
@@ -43,7 +43,7 @@ void ParseUri(const std::string& s_url, EndPoint& ep){
   return res.body();
 }
 [[maybe_unused]] std::string Downloader::GetHttpsPage(std::string&& domain,
-                                     std::string&& target) {
+                                                      std::string&& target) {
   boost::asio::io_context io;
   ssl::context ctx{ssl::context::sslv23_client};
 
@@ -52,12 +52,11 @@ void ParseUri(const std::string& s_url, EndPoint& ep){
 
   boost::asio::ip::tcp::resolver resolver(io);
   ssl::stream<boost::asio::ip::tcp::socket> stream{io, ctx};
-  if (!SSL_set_tlsext_host_name(stream.native_handle(), domain.data()))
-    {
-      boost::system::error_code ec{ static_cast<int>(::ERR_get_error()),
-                                 boost::asio::error::get_ssl_category() };
-      throw boost::system::system_error{ec};
-    }
+  if (!SSL_set_tlsext_host_name(stream.native_handle(), domain.data())) {
+    boost::system::error_code ec{static_cast<int>(::ERR_get_error()),
+                                 boost::asio::error::get_ssl_category()};
+    throw boost::system::system_error{ec};
+  }
   auto const results = resolver.resolve(domain, "443");
 
   boost::asio::connect(stream.next_layer(), results.begin(), results.end());
@@ -81,7 +80,8 @@ void ParseUri(const std::string& s_url, EndPoint& ep){
 
   return res.body();
 }
-void Downloader::DownloadPage(const std::string&& URL, size_t&& lev, MyQueue<Page>* parseQueue) {
+void Downloader::DownloadPage(const std::string& URL, size_t lev,
+                              MyQueue<Page>* parseQueue) {
   EndPoint endPoint;
   ParseUri(URL, endPoint);
   endPoint.level = lev;
@@ -89,15 +89,14 @@ void Downloader::DownloadPage(const std::string&& URL, size_t&& lev, MyQueue<Pag
   std::string html_content;
 
   if (endPoint.protocol == "http")
-    html_content = GetHttpPage(std::move(endPoint.domain),
-                               std::move(endPoint.target));
+    html_content =
+        GetHttpPage(std::move(endPoint.domain), std::move(endPoint.target));
   else if (endPoint.protocol == "https")
-    html_content = GetHttpsPage(std::move(endPoint.domain),
-                                std::move(endPoint.target));
+    html_content =
+        GetHttpsPage(std::move(endPoint.domain), std::move(endPoint.target));
 
   Page page{endPoint.protocol, endPoint.domain, html_content, endPoint.level};
 
-
-//  Загрузить html_content в очередь парсинга
+  //  Загрузить html_content в очередь парсинга
   parseQueue->Push(page);
 }
