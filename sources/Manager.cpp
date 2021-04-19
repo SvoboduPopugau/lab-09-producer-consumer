@@ -75,7 +75,7 @@ void Manager::StartWork(std::string start_URL) {
       }
 
       if (parseQueue_.Empty() && findQueue_.Empty() &&
-          page_item.level == depth_) {
+          page_item.level == depth_ && !writeQueue_.Empty()) {
         work_ = false;
       }
   }

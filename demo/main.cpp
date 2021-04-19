@@ -1,108 +1,63 @@
-
-
-//#include <boost/program_options.hpp>
-//#include <boost/program_options/options_description.hpp>
-//
-//namespace opt = boost::program_options;
-//
-//int main(int argc, char** argv)
-//{
-//  opt::options_description desc;
-//  desc.add_options()
-//      ("help", "produce help")
-//      ("time", opt::value<double>()-> default_value(10), "user\'s time value")
-//      ;
-//}
-
-//-------------------------------------------------------------------------------------
-//#include <iostream>
-//#include <vector>
-//#include <chrono>
-//
-//#include "../third-party/ThreadPool/ThreadPool.h"
-//
-//int func(int i){
-//  std::this_thread::sleep_for(std::chrono::seconds(5));
-////  mutex.lock();
-//  std::cout <<"world " << i <<  "-" << std::endl;
-////  mutex.unlock();
-//  return i*i;
-//
-//}
-//
-//int main()
-//{
-//
-//  ThreadPool pool(4);
-//  std::vector< std::future<int> > results;
-//  std::mutex m;
-//  for(int i = 1; i < 8; ++i) {
-//    results.emplace_back(
-//        pool.enqueue(func, i)
-//    );
-//  }
-//
-//  for(auto && result: results)
-//    std::cout << result.get() << "_ ";
-//  std::cout << std::endl;
-//
-//  return 0;
-//}
-#include <Downloader.hpp>
+#include <boost/program_options.hpp>
+#include <boost/program_options/options_description.hpp>
+#include <iostream>
 
 #include "Manager.hpp"
-int main() {
-    Manager manager;
-    manager.StartWork("https://bmstu.ru/");
 
+namespace opt = boost::program_options;
+
+int main(int argc, char** argv)
+{
+  opt::options_description desc;
+  desc.add_options()
+      ("help", "produce help")
+      ("url", opt::value<std::string>(), "starting url address")
+      ("depth", opt::value<size_t>(), "parse depth")
+      ("network_threads", opt::value<size_t>(), "number of downloading threads")
+      ("parser_threads", opt::value<size_t>(), "number of parsing threads")
+      ("output", opt::value<std::string>(), "output absolute filename")
+      ;
+  opt::variables_map mp;
+
+  opt::store(opt::parse_command_line(argc, argv, desc), mp);
+  opt::notify(mp);
+
+  if (mp.count("help")) {
+    std::cout << desc << std::endl;
     return 0;
+  }
+
+  std::string url{};
+  size_t depth{};
+  size_t netThreads{};
+  size_t parseThreads{};
+  std::string filename{};
+
+  if (mp.count("url"))
+    url = mp["url"].as<std::string>();
+  else
+    url = "https://bmstu.ru/";
+
+  if (mp.count("depth"))
+    depth = mp["depth"].as<size_t>();
+  else
+    depth = 1;
+
+  if (mp.count("network_threads"))
+    netThreads = mp["network_threads"].as<size_t>();
+  else
+    netThreads = 1;
+
+  if (mp.count("parser_threads"))
+    parseThreads = mp["parser_threads"].as<size_t>();
+  else
+    parseThreads = 1;
+
+  if (mp.count("output"))
+    filename = mp["output"].as<std::string>();
+  else
+    filename = "images.txt";
+
+  Manager manager(filename, depth, netThreads, parseThreads);
+  manager.StartWork(url);
 }
-//
-//#include <stdlib.h>
-//
-//#include <fstream>
-//#include <iostream>
-//#include <string>
-//
-//#include "gumbo.h"
-//
-//static void search_for_links(GumboNode* node) {
-//  if (node->type != GUMBO_NODE_ELEMENT) {
-//    return;
-//  }
-//  GumboAttribute* href;
-//  if (node->v.element.tag == GUMBO_TAG_A &&
-//      (href = gumbo_get_attribute(&node->v.element.attributes, "href"))) {
-//    std::cout << href->value << std::endl;
-//  }
-//
-//  GumboVector* children = &node->v.element.children;
-//  for (unsigned int i = 0; i < children->length; ++i) {
-//    search_for_links(static_cast<GumboNode*>(children->data[i]));
-//  }
-//}
-//
-//int main(int argc, char** argv) {
-//  if (argc != 2) {
-//    std::cout << "Usage: find_links <html filename>.\n";
-//    exit(EXIT_FAILURE);
-//  }
-//  const char* filename = argv[1];
-//
-//  std::ifstream in(filename, std::ios::in | std::ios::binary);
-//  if (!in) {
-//    std::cout << "File " << filename << " not found!\n";
-//    exit(EXIT_FAILURE);
-//  }
-//
-//  std::string contents;
-//  in.seekg(0, std::ios::end);
-//  contents.resize(in.tellg());
-//  in.seekg(0, std::ios::beg);
-//  in.read(&contents[0], contents.size());
-//  in.close();
-//
-//  GumboOutput* output = gumbo_parse(contents.c_str());
-//  search_for_links(output->root);
-//  gumbo_destroy_output(&kGumboDefaultOptions, output);
-//}
