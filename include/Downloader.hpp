@@ -3,7 +3,7 @@
 #ifndef INCLUDE_DOWNLOADER_HPP_
 #define INCLUDE_DOWNLOADER_HPP_
 
-#include <../third-party/beast/example/common/root_certificates.hpp>
+#include <root_certificates.hpp>
 #include <boost/asio.hpp>
 #include <boost/asio/ssl/error.hpp>
 #include <boost/asio/ssl/stream.hpp>
