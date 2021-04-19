@@ -102,11 +102,11 @@ std::vector<EndPoint> HtmlParser::GetPng(std::vector<EndPoint>& Links) {
 }
 
 void HtmlParser::ParsePage(Page& page, MyQueue<EndPoint>& writeQueue,
-                           MyQueue<Url>& findQueue, bool& Is_working,
-                           size_t& depth) {
+                           MyQueue<Url>& findQueue, size_t& depth) {
   std::vector<EndPoint> Links = GetLinks(page);
   std::vector<EndPoint> Images = GetPng(Links);
-  if (page.level <= depth) {
+  if (page.level <= depth)
+  {
     for (auto& x : Links) {
       std::string str_url = ModifyToUrl(x);
       if (str_url != "Unknown url") {
@@ -114,8 +114,6 @@ void HtmlParser::ParsePage(Page& page, MyQueue<EndPoint>& writeQueue,
         //        std::cout << "Find: " << str_url << std::endl;
       }
     }
-  } else {
-    Is_working = false;
   }
   writeQueue.Push(std::move(Images));
 }

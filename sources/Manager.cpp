@@ -49,7 +49,7 @@ void Manager::StartWork(std::string start_URL) {
   Page page_item;
 
   while (work_) {
-    if (!findQueue_.Empty()) {
+
       while (findQueue_.Pop(url_item)) {
         if (url_item.level <= depth_) {
           downloadPool_.enqueue(
@@ -57,28 +57,27 @@ void Manager::StartWork(std::string start_URL) {
                 Downloader::DownloadPage(item.url, item.level, &parseQueue_);
               },
               url_item);
-        } else {
-          work_ = false;
-          break;
         }
+//        else {
+//          work_ = false;
+//          break;
+//        }
       }
-    }
 
-    if (!parseQueue_.Empty()) {
       while (parseQueue_.Pop(page_item)) {
         if (page_item.level <= depth_) {
           parsePool_.enqueue(
               [this](Page page) {
-                HtmlParser::ParsePage(page, writeQueue_, findQueue_, work_,
-                                      depth_);
+                HtmlParser::ParsePage(page, writeQueue_, findQueue_, depth_);
               },
               page_item);
-        } else {
-          work_ = false;
-          break;
         }
       }
-    }
+
+      if (parseQueue_.Empty() && findQueue_.Empty() &&
+          page_item.level == depth_) {
+        work_ = false;
+      }
   }
   WriteIMGlinks();
 }

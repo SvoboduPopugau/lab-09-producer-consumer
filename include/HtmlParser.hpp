@@ -21,8 +21,7 @@ class HtmlParser {
  public:
   HtmlParser() = default;
   static void ParsePage(Page& page, MyQueue<EndPoint>& writeQueue,
-                        MyQueue<Url>& findQueue, bool& Is_working,
-                        size_t& depth);
+                        MyQueue<Url>& findQueue, size_t& depth);
   ~HtmlParser() = default;
 
  private:

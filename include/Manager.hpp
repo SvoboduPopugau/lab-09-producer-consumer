@@ -5,7 +5,7 @@
 #ifndef LAB_09_PRODUCER_CONSUMER_MANAGER_HPP
 #define LAB_09_PRODUCER_CONSUMER_MANAGER_HPP
 
-#include <../third-party/ThreadPool/ThreadPool.h>
+#include <ThreadPool.h>
 
 #include <fstream>
 

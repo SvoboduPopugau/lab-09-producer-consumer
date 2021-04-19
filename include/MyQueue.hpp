@@ -24,8 +24,10 @@ class MyQueue {
   bool Pop(T& item) {
     if (queue_.empty()) return false;
 
+    mutex_.lock();
     item = std::move(queue_.front());
     queue_.pop();
+    mutex_.unlock();
     return true;
   }
 
