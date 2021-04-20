@@ -1,6 +1,4 @@
-//
-// Created by vladislav on 12.04.2021.
-//
+// Copyright 2020 Your Name <your_email>
 
 #include <HtmlParser.hpp>
 

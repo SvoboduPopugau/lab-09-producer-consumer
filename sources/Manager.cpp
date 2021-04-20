@@ -1,6 +1,4 @@
-//
-// Created by vladislav on 13.04.2021.
-//
+// Copyright 2020 Your Name <your_email>
 
 #include "Manager.hpp"
 
@@ -49,7 +47,6 @@ void Manager::StartWork(std::string start_URL) {
   Page page_item;
 
   while (work_) {
-
       while (findQueue_.Pop(url_item)) {
         if (url_item.level <= depth_) {
           downloadPool_.enqueue(
