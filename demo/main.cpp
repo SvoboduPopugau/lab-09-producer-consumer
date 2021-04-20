@@ -46,12 +46,12 @@ int main(int argc, char** argv)
   if (mp.count("network_threads"))
     netThreads = mp["network_threads"].as<size_t>();
   else
-    netThreads = 1;
+    netThreads = 4;
 
   if (mp.count("parser_threads"))
     parseThreads = mp["parser_threads"].as<size_t>();
   else
-    parseThreads = 1;
+    parseThreads = 4;
 
   if (mp.count("output"))
     filename = mp["output"].as<std::string>();

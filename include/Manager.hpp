@@ -24,6 +24,7 @@ class Manager {
   ~Manager() = default;
 
  private:
+  std::atomic_size_t counter = 0;
   bool work_;
   std::string outputFile_;
   size_t depth_;

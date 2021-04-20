@@ -54,6 +54,7 @@ void Manager::StartWork(std::string start_URL) {
         if (url_item.level <= depth_) {
           downloadPool_.enqueue(
               [this](Url item) {
+                ++counter;
                 Downloader::DownloadPage(item.url, item.level, &parseQueue_);
               },
               url_item);
@@ -64,18 +65,20 @@ void Manager::StartWork(std::string start_URL) {
 //        }
       }
 
+      std::this_thread::sleep_for(std::chrono::milliseconds(5));
+
       while (parseQueue_.Pop(page_item)) {
         if (page_item.level <= depth_) {
           parsePool_.enqueue(
               [this](Page page) {
                 HtmlParser::ParsePage(page, writeQueue_, findQueue_, depth_);
+                --counter;
               },
               page_item);
         }
       }
 
-      if (parseQueue_.Empty() && findQueue_.Empty() &&
-          page_item.level == depth_ && !writeQueue_.Empty()) {
+      if (parseQueue_.Empty() && findQueue_.Empty() && !counter) {
         work_ = false;
       }
   }
