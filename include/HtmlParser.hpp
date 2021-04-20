@@ -1,9 +1,7 @@
-//
-// Created by vladislav on 12.04.2021.
-//
+// Copyright 2020 Your Name <your_email>
 
-#ifndef LAB_09_PRODUCER_CONSUMER_HTMLPARSER_H
-#define LAB_09_PRODUCER_CONSUMER_HTMLPARSER_H
+#ifndef INCLUDE_HTMLPARSER_HPP_
+#define INCLUDE_HTMLPARSER_HPP_
 
 #include <gumbo.h>
 
@@ -32,4 +30,4 @@ class HtmlParser {
   static std::vector<EndPoint> GetPng(std::vector<EndPoint>& Links);
 };
 
-#endif  // LAB_09_PRODUCER_CONSUMER_HTMLPARSER_H
+#endif  // INCLUDE_HTMLPARSER_HPP_

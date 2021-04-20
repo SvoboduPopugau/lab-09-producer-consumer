@@ -1,13 +1,17 @@
+// Copyright 2020 Your Name <your_email>
+
 #ifndef INCLUDE_MYQUEUE_HPP_
 #define INCLUDE_MYQUEUE_HPP_
 
 #include <mutex>
 #include <queue>
+#include <utility>
+#include <vector>
 
 template <typename T>
 class MyQueue {
  public:
-  MyQueue() : queue_(), mutex_(){};
+  MyQueue() : queue_(), mutex_(){}
   void Push(T& other) {
     std::lock_guard lockGuard{mutex_};
     queue_.push(other);

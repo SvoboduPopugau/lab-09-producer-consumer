@@ -1,9 +1,7 @@
-//
-// Created by vladislav on 12.04.2021.
-//
+// Copyright 2020 Your Name <your_email>
 
-#ifndef LAB_09_PRODUCER_CONSUMER_WORKTYPENAMES_H
-#define LAB_09_PRODUCER_CONSUMER_WORKTYPENAMES_H
+#ifndef INCLUDE_WORKTYPENAMES_HPP_
+#define INCLUDE_WORKTYPENAMES_HPP_
 
 #include <string>
 struct Page {
@@ -25,4 +23,4 @@ struct Url {
   size_t level;
 };
 
-#endif  // LAB_09_PRODUCER_CONSUMER_WORKTYPENAMES_H
+#endif  // INCLUDE_WORKTYPENAMES_HPP_

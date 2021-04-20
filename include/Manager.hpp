@@ -1,13 +1,12 @@
-//
-// Created by vladislav on 13.04.2021.
-//
+// Copyright 2020 Your Name <your_email>
 
-#ifndef LAB_09_PRODUCER_CONSUMER_MANAGER_HPP
-#define LAB_09_PRODUCER_CONSUMER_MANAGER_HPP
+#ifndef INCLUDE_MANAGER_HPP_
+#define INCLUDE_MANAGER_HPP_
 
 #include <ThreadPool.h>
 
 #include <fstream>
+#include <string>
 
 #include "Downloader.hpp"
 #include "HtmlParser.hpp"
@@ -35,4 +34,4 @@ class Manager {
   MyQueue<EndPoint> writeQueue_;
 };
 
-#endif  // LAB_09_PRODUCER_CONSUMER_MANAGER_HPP
+#endif  // INCLUDE_MANAGER_HPP_
